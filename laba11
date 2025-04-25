@@ -1,0 +1,40 @@
+import requests
+import json
+
+def get_movie_data(movie_title):
+    api_key = "505480d7"  
+    base_url = "http://www.omdbapi.com/"
+    params = {
+        't': movie_title,
+        'apikey': api_key
+    }
+
+    response = requests.get(base_url, params=params)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+def main():
+    print("добра пажаловать в  муви скибиди!")
+
+    while True:
+        command = input("пиши название какашкаа (или 'exit' для выхода): ")
+        if command.lower() == "exit":
+            print("пака!")
+            break
+
+        movie_data = get_movie_data(command)
+
+        if movie_data and movie_data.get('Response') == 'True':
+            print(f"🎬 {movie_data['Title']} ({movie_data['Year']})")
+            print(f"режисере: {movie_data['Director']}")
+            print(f"жанре: {movie_data['Genre']}")
+            print(f"рейтинге: {movie_data['imdbRating']}")
+            print(f"описани: {movie_data['Plot']}\n")
+        else:
+            print("блин фильма нет. напиши езо раз.\n")
+
+if __name__ == "__main__":
+    main()
